@@ -1,12 +1,16 @@
-image: Ubuntu  # образ для сборки
+version: 1.0.{build}
+os: Windows
+clone_depth: 1
 
-stack: jdk 11  # версия JDK
+environment:
+  JAVA_HOME: C:\\tools\\java\\zulu11
 
-branches:
-  only:
-    - main  # ветка git
-
-build: off  # будем использовать свой скрипт сборки
+install:
+  - ps: Install-Product node '14.17.3'
+  - ps: choco install maven -y
 
 build_script:
-  - mvn verify
+  - mvn clean package
+
+test_script:
+  - mvn test
