@@ -1,18 +1,15 @@
-# Branches
+image: Ubuntu  # образ для сборки
+
+stack: jdk 11  # версия JDK
+
 branches:
   only:
-  - feature/for_ci_test
-image: ubuntu
+    - main  # ветка git
 
-install: 
-- sh: sudo add-apt-repository --yes ppa:rpardini/adoptopenjdk
-- sh: sudo apt-get update
-- sh: sudo apt-get install -y adoptopenjdk-11-jdk-hotspot-installer
-- sh: sudo apt install adoptopenjdk-11-jdk-hotspot-set-default
-#/usr/lib/jvm/adoptopenjdk-11-jdk-hotspot
-- sh: export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-11-jdk-hotspot
-- sh: echo $JAVA_HOME
-- sh: export PATH=${PATH}
+build: off  # будем использовать свой скрипт сборки
+
+install:
+  - chmod +x gradlew
 
 before_build:
 - mvn -v
