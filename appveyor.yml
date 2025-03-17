@@ -1,16 +1,24 @@
-version: 1.0.{build}
-os: Windows
-clone_depth: 1
+# Branches
+branches:
+  only:
+  - feature/for_ci_test
+image: ubuntu
 
-environment:
-  JAVA_HOME: C:\\tools\\java\\zulu11
+install: 
+- sh: sudo add-apt-repository --yes ppa:rpardini/adoptopenjdk
+- sh: sudo apt-get update
+- sh: sudo apt-get install -y adoptopenjdk-11-jdk-hotspot-installer
+- sh: sudo apt install adoptopenjdk-11-jdk-hotspot-set-default
+#/usr/lib/jvm/adoptopenjdk-11-jdk-hotspot
+- sh: export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-11-jdk-hotspot
+- sh: echo $JAVA_HOME
+- sh: export PATH=${PATH}
 
-install:
-  - ps: Install-Product node '14.17.3'
-  - ps: choco install maven -y
+before_build:
+- mvn -v
 
 build_script:
-  - mvn clean package
+- mvn clean package -DskipTests
 
 test_script:
-  - mvn test
+- mvn install verify
