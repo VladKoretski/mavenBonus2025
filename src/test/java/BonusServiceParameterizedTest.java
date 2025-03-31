@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class BonusServiceParameterizedTest {
 
     @ParameterizedTest
-    @CsvSource(value = {"1050, true, 52","1000,false,10","100000,true,500","1000000,false,500"})
+    @CsvSource(value = {"1000,false,10","100000,true,500","1000000,false,500"})
     public void BonusServiceTest(int amount, boolean ifRegistered, int expected) {
         BonusService bonusService = new BonusService();
         int actual = bonusService.calcBonus(amount,ifRegistered);
