@@ -21,7 +21,6 @@ public class BonusService {
         if (bonusValue > MAX_BONUS_AMOUNT) {
             bonusValue = MAX_BONUS_AMOUNT;
         }
-
         return bonusValue;
     }
 }
