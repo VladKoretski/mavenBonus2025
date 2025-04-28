@@ -15,7 +15,7 @@ public class BonusServiceTest {
     @Test
     public void testUnRegisteredUnderLimit() {
         BonusService bonusCalculation = new BonusService();
-        int expected = 50; ///50
+        int expected = 500; ///50
         int actual = bonusCalculation.calcBonus(5_000, false);
         Assertions.assertEquals(expected, actual);
     }
