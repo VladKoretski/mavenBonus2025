@@ -8,7 +8,7 @@ public class BonusServiceTest {
     public void testRegisteredUnderLimit() {
         BonusService bonusCalculation = new BonusService();
         int expected = 250;
-        int actual = bonusCalculation.calcBonus(5_000, true);
+        int actual = bonusCalculation.calcBonus(5000000, true);
         Assertions.assertEquals(expected, actual);
     }
 
