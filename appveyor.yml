@@ -1,6 +1,6 @@
 image: Ubuntu2204
 
-stack: jdk 17
+stack: jdk 11  # Оставляем JDK 11, так как в pom.xml задан compiler source/target = 11
 
 branches:
   only:
@@ -8,19 +8,19 @@ branches:
 
 build: off
 
-# Кэширование зависимостей Maven (ускоряет сборку)
+# Кэширование зависимостей (ключ -> pom.xml позволяет инвалидировать кэш при изменении зависимостей)
 cache:
   - ~/.m2/repository -> pom.xml
 
 before_build:
   - mvn -v
-  # Удаляем маркеры неудачных загрузок, чтобы Maven не пропускал артефакты
+  # Удаляем маркеры неудачных загрузок (*.lastUpdated), чтобы Maven не пропускал артефакты
   - find ~/.m2/repository -name "*.lastUpdated" -delete
 
 build_script:
-  # Основная команда сборки с параметрами для стабильной загрузки зависимостей
+  # Ваша команда с параметрами для обхода проблем с загрузкой зависимостей
   - mvn clean package -DskipTests -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
 
 test_script:
-  # Запуск тестов с аналогичными сетевыми настройками для надёжности
+  # Запуск тестов с теми же сетевыми настройками для стабильности
   - mvn verify -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
