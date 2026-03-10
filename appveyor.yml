@@ -1,6 +1,7 @@
 image: Ubuntu2204
 
-stack: jdk 11
+# 🔥 Ключевое изменение: используем современную версию JDK с актуальными сертификатами
+stack: jdk 17
 
 branches:
   only:
@@ -13,11 +14,18 @@ cache:
 
 before_build:
   - mvn -v
-  # Исправленная строка: || true гарантирует успешный код выхода, даже если директории нет
+  # Очистка маркеров неудачных загрузок (|| true предотвращает падение, если директории ещё нет)
   - find ~/.m2/repository -name "*.lastUpdated" -delete || true
 
 build_script:
-  - mvn clean package -DskipTests -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
+  # Ваша команда + дополнительные параметры для надёжного SSL-соединения
+  - mvn clean package -DskipTests -U -B 
+      -Dmaven.resolver.transport=wagon 
+      -Dmaven.wagon.http.retryHandler.count=3
+      -Dhttps.protocols=TLSv1.2,TLSv1.3
 
 test_script:
-  - mvn verify -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
+  - mvn verify -U -B 
+      -Dmaven.resolver.transport=wagon 
+      -Dmaven.wagon.http.retryHandler.count=3
+      -Dhttps.protocols=TLSv1.2,TLSv1.3
