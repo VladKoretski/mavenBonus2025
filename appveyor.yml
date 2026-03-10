@@ -1,6 +1,6 @@
-image: Ubuntu2204  # Обновляем образ до актуального (Ubuntu 22.04 LTS)
+image: Ubuntu2204
 
-stack: jdk 17      # Рекомендуется использовать JDK 17 для лучшей совместимости с TLS 1.3
+stack: jdk 17
 
 branches:
   only:
@@ -8,21 +8,19 @@ branches:
 
 build: off
 
-# Очистка кэша перед сборкой, чтобы избежать битых артефактов
+# Кэширование зависимостей Maven (ускоряет сборку)
 cache:
   - ~/.m2/repository -> pom.xml
 
 before_build:
   - mvn -v
-  # Очистка локального репозитория от сбойных загрузок (файлы .lastUpdated)
+  # Удаляем маркеры неудачных загрузок, чтобы Maven не пропускал артефакты
   - find ~/.m2/repository -name "*.lastUpdated" -delete
 
 build_script:
-  # -U: форсировать проверку обновлений
-  # -Dmaven.wagon.http.retryHandler.count=3: повтор при сетевых сбоях
-  # -Dhttp.keepAlive=false: отключение keep-alive для предотвращения проблем с разорванными соединениями
-  - mvn clean package -DskipTests -U -B -Dmaven.wagon.http.retryHandler.count=3 -Dhttp.keepAlive=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=25
+  # Основная команда сборки с параметрами для стабильной загрузки зависимостей
+  - mvn clean package -DskipTests -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
 
 test_script:
-  # Запуск тестов с аналогичными сетевыми настройками
-  - mvn verify -U -B -Dmaven.wagon.http.retryHandler.count=3 -Dhttp.keepAlive=false
+  # Запуск тестов с аналогичными сетевыми настройками для надёжности
+  - mvn verify -U -B -Dmaven.resolver.transport=wagon -Dmaven.wagon.http.retryHandler.count=3
