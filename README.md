@@ -4,3 +4,4 @@
 *MAVEN PROJECT*  
 [![Java CI with Maven](https://github.com/VladKoretski/mavenBonus2025/actions/workflows/maven.yml/badge.svg)](https://github.com/VladKoretski/mavenBonus2025/actions/workflows/maven.yml)
 
+[![Java CI with Maven](https://github.com/VladKoretski/mavenBonus2025/actions/workflows/maven.yml/badge.svg)](https://github.com/VladKoretski/mavenBonus2025/actions/workflows/maven.yml)
